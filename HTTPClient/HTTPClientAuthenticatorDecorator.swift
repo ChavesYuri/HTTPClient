@@ -9,8 +9,8 @@ final class HTTPClientAuthenticatorDecorator: HTTPClient {
         self.token = token
     }
     
-    func perfomRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
-        decoratee.perfomRequest(request: makeAuthorizedRequest(from: request), completion: completion)
+    func performRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
+        decoratee.performRequest(request: makeAuthorizedRequest(from: request), completion: completion)
     }
     
     private func makeAuthorizedRequest(from request: URLRequest) -> URLRequest {

@@ -3,7 +3,7 @@ import Foundation
 public protocol HTTPClient {
     typealias Result = Swift.Result<(Data, HTTPURLResponse), Error>
     
-    func perfomRequest(request: URLRequest, completion: @escaping (Result) -> Void)
+    func performRequest(request: URLRequest, completion: @escaping (Result) -> Void)
 }
 
 public final class URLSessionHTTPClient: HTTPClient {
@@ -15,7 +15,7 @@ public final class URLSessionHTTPClient: HTTPClient {
     
     private struct UnexpectedValuesRepresentation: Error {}
     
-    public func perfomRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
+    public func performRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
         session.dataTask(with: request) { data, response, error in
             if let error = error {
                 completion(.failure(error))

@@ -9,7 +9,7 @@ final class HTTPClientAuthenticatorDecoratorTests: XCTestCase {
         let request = URLRequest(url: .init(string: "http://a-url")!)
         let sut = HTTPClientAuthenticatorDecorator(decoratee: decoratee, token: token)
         
-        sut.perfomRequest(request: request) { _ in }
+        sut.performRequest(request: request) { _ in }
         
         XCTAssertEqual(decoratee.count(), 1)
         XCTAssertEqual(decoratee.request(at: 0)?.allHTTPHeaderFields?["Authorization"], "Bearer \(token)")
@@ -22,7 +22,7 @@ final class HTTPClientAuthenticatorDecoratorTests: XCTestCase {
         request.allHTTPHeaderFields = ["a key header": "a value header"]
         let sut = HTTPClientAuthenticatorDecorator(decoratee: decoratee, token: token)
         
-        sut.perfomRequest(request: request) { _ in }
+        sut.performRequest(request: request) { _ in }
         
         XCTAssertEqual(decoratee.request(at: 0)?.allHTTPHeaderFields?["Authorization"], "Bearer \(token)")
         XCTAssertEqual(decoratee.request(at: 0)?.allHTTPHeaderFields?["a key header"], "a value header")
@@ -31,7 +31,7 @@ final class HTTPClientAuthenticatorDecoratorTests: XCTestCase {
     final class HTTPClientSpy: HTTPClient {
         private var requests: [URLRequest] = []
         
-        func perfomRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
+        func performRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
             requests.append(request)
         }
         
