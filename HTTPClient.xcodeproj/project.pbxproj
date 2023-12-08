@@ -8,8 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		1ADDE6432B214CCA00584FE4 /* HTTPClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ADDE63A2B214CCA00584FE4 /* HTTPClient.framework */; };
-		1ADDE6482B214CCA00584FE4 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6472B214CCA00584FE4 /* HTTPClientTests.swift */; };
-		1ADDE6492B214CCA00584FE4 /* HTTPClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 1ADDE63D2B214CCA00584FE4 /* HTTPClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1ADDE6572B214E0200584FE4 /* URLSessionHTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6562B214E0200584FE4 /* URLSessionHTTPClientTests.swift */; };
+		1ADDE6592B21FA9000584FE4 /* MemoryLeakTrackExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6582B21FA9000584FE4 /* MemoryLeakTrackExtension.swift */; };
+		1ADDE65B2B21FAAD00584FE4 /* URLProtocolStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE65A2B21FAAD00584FE4 /* URLProtocolStub.swift */; };
+		1ADDE65E2B223B9500584FE4 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE65D2B223B9500584FE4 /* URLSessionHTTPClient.swift */; };
+		1ADDE6632B223FC900584FE4 /* RemoteLoginLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6622B223FC900584FE4 /* RemoteLoginLoaderTests.swift */; };
+		1ADDE6652B2250CE00584FE4 /* HTTPRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6642B2250CE00584FE4 /* HTTPRequest.swift */; };
+		1ADDE6672B22514A00584FE4 /* HTTPClientAuthenticatorDecoratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6662B22514A00584FE4 /* HTTPClientAuthenticatorDecoratorTests.swift */; };
+		1ADDE6692B2256FA00584FE4 /* HTTPClientAuthenticatorDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADDE6682B2256FA00584FE4 /* HTTPClientAuthenticatorDecorator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,9 +30,15 @@
 
 /* Begin PBXFileReference section */
 		1ADDE63A2B214CCA00584FE4 /* HTTPClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HTTPClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1ADDE63D2B214CCA00584FE4 /* HTTPClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HTTPClient.h; sourceTree = "<group>"; };
 		1ADDE6422B214CCA00584FE4 /* HTTPClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HTTPClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		1ADDE6472B214CCA00584FE4 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
+		1ADDE6562B214E0200584FE4 /* URLSessionHTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClientTests.swift; sourceTree = "<group>"; };
+		1ADDE6582B21FA9000584FE4 /* MemoryLeakTrackExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryLeakTrackExtension.swift; sourceTree = "<group>"; };
+		1ADDE65A2B21FAAD00584FE4 /* URLProtocolStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLProtocolStub.swift; sourceTree = "<group>"; };
+		1ADDE65D2B223B9500584FE4 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
+		1ADDE6622B223FC900584FE4 /* RemoteLoginLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteLoginLoaderTests.swift; sourceTree = "<group>"; };
+		1ADDE6642B2250CE00584FE4 /* HTTPRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequest.swift; sourceTree = "<group>"; };
+		1ADDE6662B22514A00584FE4 /* HTTPClientAuthenticatorDecoratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientAuthenticatorDecoratorTests.swift; sourceTree = "<group>"; };
+		1ADDE6682B2256FA00584FE4 /* HTTPClientAuthenticatorDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientAuthenticatorDecorator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +81,9 @@
 		1ADDE63C2B214CCA00584FE4 /* HTTPClient */ = {
 			isa = PBXGroup;
 			children = (
-				1ADDE63D2B214CCA00584FE4 /* HTTPClient.h */,
+				1ADDE66C2B225AE400584FE4 /* URLSession */,
+				1ADDE6642B2250CE00584FE4 /* HTTPRequest.swift */,
+				1ADDE6682B2256FA00584FE4 /* HTTPClientAuthenticatorDecorator.swift */,
 			);
 			path = HTTPClient;
 			sourceTree = "<group>";
@@ -77,9 +91,53 @@
 		1ADDE6462B214CCA00584FE4 /* HTTPClientTests */ = {
 			isa = PBXGroup;
 			children = (
-				1ADDE6472B214CCA00584FE4 /* HTTPClientTests.swift */,
+				1ADDE6612B223FA200584FE4 /* RemoteLoginLoader */,
+				1ADDE6602B223CAF00584FE4 /* Helpers */,
+				1ADDE65F2B223C9B00584FE4 /* URLSessionHTTPClient */,
 			);
 			path = HTTPClientTests;
+			sourceTree = "<group>";
+		};
+		1ADDE65C2B21FB2100584FE4 /* Doubles */ = {
+			isa = PBXGroup;
+			children = (
+				1ADDE65A2B21FAAD00584FE4 /* URLProtocolStub.swift */,
+			);
+			path = Doubles;
+			sourceTree = "<group>";
+		};
+		1ADDE65F2B223C9B00584FE4 /* URLSessionHTTPClient */ = {
+			isa = PBXGroup;
+			children = (
+				1ADDE6562B214E0200584FE4 /* URLSessionHTTPClientTests.swift */,
+				1ADDE65C2B21FB2100584FE4 /* Doubles */,
+			);
+			path = URLSessionHTTPClient;
+			sourceTree = "<group>";
+		};
+		1ADDE6602B223CAF00584FE4 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				1ADDE6582B21FA9000584FE4 /* MemoryLeakTrackExtension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		1ADDE6612B223FA200584FE4 /* RemoteLoginLoader */ = {
+			isa = PBXGroup;
+			children = (
+				1ADDE6622B223FC900584FE4 /* RemoteLoginLoaderTests.swift */,
+				1ADDE6662B22514A00584FE4 /* HTTPClientAuthenticatorDecoratorTests.swift */,
+			);
+			path = RemoteLoginLoader;
+			sourceTree = "<group>";
+		};
+		1ADDE66C2B225AE400584FE4 /* URLSession */ = {
+			isa = PBXGroup;
+			children = (
+				1ADDE65D2B223B9500584FE4 /* URLSessionHTTPClient.swift */,
+			);
+			path = URLSession;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -89,7 +147,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ADDE6492B214CCA00584FE4 /* HTTPClient.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,9 +201,11 @@
 				TargetAttributes = {
 					1ADDE6392B214CCA00584FE4 = {
 						CreatedOnToolsVersion = 15.0.1;
+						LastSwiftMigration = 1500;
 					};
 					1ADDE6412B214CCA00584FE4 = {
 						CreatedOnToolsVersion = 15.0.1;
+						LastSwiftMigration = 1500;
 					};
 				};
 			};
@@ -191,6 +250,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ADDE65E2B223B9500584FE4 /* URLSessionHTTPClient.swift in Sources */,
+				1ADDE6652B2250CE00584FE4 /* HTTPRequest.swift in Sources */,
+				1ADDE6692B2256FA00584FE4 /* HTTPClientAuthenticatorDecorator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,7 +260,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ADDE6482B214CCA00584FE4 /* HTTPClientTests.swift in Sources */,
+				1ADDE6572B214E0200584FE4 /* URLSessionHTTPClientTests.swift in Sources */,
+				1ADDE6672B22514A00584FE4 /* HTTPClientAuthenticatorDecoratorTests.swift in Sources */,
+				1ADDE65B2B21FAAD00584FE4 /* URLProtocolStub.swift in Sources */,
+				1ADDE6632B223FC900584FE4 /* RemoteLoginLoaderTests.swift in Sources */,
+				1ADDE6592B21FA9000584FE4 /* MemoryLeakTrackExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +406,7 @@
 		1ADDE64D2B214CCA00584FE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -364,6 +431,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -371,6 +439,7 @@
 		1ADDE64E2B214CCA00584FE4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -402,6 +471,8 @@
 		1ADDE6502B214CCA00584FE4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 272247UTKJ;
@@ -410,6 +481,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = yuri.com.HTTPClientTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -417,6 +489,8 @@
 		1ADDE6512B214CCA00584FE4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 272247UTKJ;
