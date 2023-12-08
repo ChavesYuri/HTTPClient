@@ -1,40 +1,5 @@
 import Foundation
 
-struct Credentials: Encodable {
-    let username: String
-    let password: String
-}
-
-public struct UserInfoModel: Equatable {
-    let isPremium: Bool
-    let token: String
-    
-    public init(isPremium: Bool, token: String) {
-        self.isPremium = isPremium
-        self.token = token
-    }
-}
-
-struct LoginRequest: HTTPRequest {
-    let username: String
-    let password: String
-    
-    var path: String {
-        "/path"
-    }
-    
-    var method: AFHTTPMethod {
-        .get
-    }
-    
-    var parameters: [String : Any]? {
-        [
-            "username": username,
-            "password": password
-        ]
-    }
-}
-
 final class RemoteLoginLoader {
     private let httpClient: HTTPClient
     
@@ -66,7 +31,6 @@ final class RemoteLoginLoader {
         }
     }
 }
-
 
 private class UserInfoMapper {
     private struct UserInfo: Decodable {
