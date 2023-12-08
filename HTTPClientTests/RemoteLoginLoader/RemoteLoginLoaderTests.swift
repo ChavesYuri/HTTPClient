@@ -1,87 +1,116 @@
 import XCTest
 @testable import HTTPClient
 
-struct Credentials: Encodable {
-    let username: String
-    let password: String
-}
-
-struct LoginRequest: HTTPRequest {
-    let username: String
-    let password: String
-    
-    var path: String {
-        "/path"
-    }
-    
-    var method: AFHTTPMethod {
-        .get
-    }
-    
-    var parameters: [String : Any]? {
-        [
-            "username": username,
-            "password": password
-        ]
-    }
-}
-
-final class RemoteLoginLoader {
-    private let httpClient: HTTPClient
-    
-    enum Error {
-        case invalidCode
-        case connectivity
-    }
-    
-    init(httpClient: HTTPClient) {
-        self.httpClient = httpClient
-    }
-    
-    func execute(credentials: Credentials) {
-        let request = LoginRequest(username: credentials.username, password: credentials.password)
-        httpClient.performRequest(request: request.urlRequest) { _ in }
-    }
-}
-
 final class RemoteLoginLoaderTests: XCTestCase {
     func test_init_doesNotRequestHTTPClient() {
-        let httpClient = HTTPClientSpy()
-        _ = RemoteLoginLoader(httpClient: httpClient)
+        let (_, httpClient) = makeSUT()
         
-        XCTAssertTrue(httpClient.requests.isEmpty)
+        XCTAssertEqual(httpClient.count(), 0)
     }
     
     func test_execute_requestsHTTPClient() {
-        let httpClient = HTTPClientSpy()
-        let sut = RemoteLoginLoader(httpClient: httpClient)
+        let (sut, httpClient) = makeSUT()
         
-        sut.execute(credentials: .init(username: "a username", password: "a password"))
+        sut.execute(credentials: .init(username: "a username", password: "a password")) { _ in }
         
-        XCTAssertFalse(httpClient.requests.isEmpty)
+        XCTAssertEqual(httpClient.count(), 1)
     }
     
     func test_execute_givenCredentialAppendItInTheBody() {
-        let httpClient = HTTPClientSpy()
-        let sut = RemoteLoginLoader(httpClient: httpClient)
+        let (sut, httpClient) = makeSUT()
         let credentials = Credentials(username: "a username", password: "a password")
         
-        sut.execute(credentials: credentials)
+        sut.execute(credentials: credentials) { _ in }
         
         let expectedData = try? JSONSerialization.data(withJSONObject: ["username": credentials.username, "password": credentials.password])
         
-        XCTAssertEqual(httpClient.requests.first?.key.httpBody?.count, expectedData?.count)
+        XCTAssertEqual(httpClient.request(at: 0)?.httpBody?.count, expectedData?.count)
     }
     
-    final class HTTPClientSpy: HTTPClient {
-        var requests: [URLRequest: (HTTPClient.Result) -> Void] = [:]
+    func test_execute_whenFails_completesWithConnectivityError() {
+        let (sut, httpClient) = makeSUT()
         
-        func performRequest(request: URLRequest, completion: @escaping (HTTPClient.Result) -> Void) {
-            requests[request] = completion
+        expect(sut, toCompleteWith: .failure(.connectivity), when: {
+            let anyError = NSError(domain: "a domain", code: 1)
+            httpClient.complete(with: anyError, at: 0)
+        })
+    }
+    
+    func test_execute_whenSucceedsWithCodeDifferentFrom200_completesWithInvalidCodeError() {
+        let (sut, httpClient) = makeSUT()
+        
+        expect(sut, toCompleteWith: .failure(.invalidData), when: {
+            let failedHTTPResponse = HTTPURLResponse(url: anyURL(), statusCode: 400, httpVersion: nil, headerFields: nil)!
+            let anyData = Data("any data".utf8)
+            httpClient.complete(with: anyData, response: failedHTTPResponse, at: 0)
+        })
+    }
+    
+    func test_execute_whenCodeIs200AndJSONIsNotValid() {
+        let (sut, httpClient) = makeSUT()
+        
+        expect(sut, toCompleteWith: .failure(.invalidData), when: {
+            let failedHTTPResponse = HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let anyData = Data("invalid json".utf8)
+            httpClient.complete(with: anyData, response: failedHTTPResponse, at: 0)
+        })
+    }
+    
+    func test_execute_whenCodeIs200AndValidJSON_completesWithSuccess() {
+        let (sut, httpClient) = makeSUT()
+        let expectedUserModel = UserInfoModel(isPremium: false, token: "a token")
+        expect(sut, toCompleteWith: .success(expectedUserModel), when: {
+            let failedHTTPResponse = HTTPURLResponse(url: anyURL(), statusCode: 200, httpVersion: nil, headerFields: nil)!
+            let validJSON = makeValidJSON(expectedUserModel)
+            httpClient.complete(with: validJSON, response: failedHTTPResponse, at: 0)
+        })
+    }
+    
+    // MARK: Helpers
+    
+    private func makeValidJSON(_ user: UserInfoModel) -> Data {
+        let json: [String : Any] = ["premium": user.isPremium, "token": user.token]
+        return try! JSONSerialization.data(withJSONObject: json)
+    }
+    
+    private func expect(
+        _ sut: RemoteLoginLoader,
+        toCompleteWith result: RemoteLoginLoader.LoginResult,
+        when action: () -> Void,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) {
+        var resultReceived: RemoteLoginLoader.LoginResult?
+        sut.execute(credentials: .init(username: "a username", password: "a password")) { result in
+            resultReceived = result
         }
         
-        func complete(at request: URLRequest, with error: Error) {
-            requests[request]?(.failure(error))
+        action()
+        
+        switch (resultReceived, result) {
+        case let (.success(receivedModel), .success(expectedModel)):
+            XCTAssertEqual(receivedModel, expectedModel)
+        case let (.failure(receivedError), .failure(expectedError)):
+            XCTAssertEqual(receivedError, expectedError)
+        default:
+            XCTFail("Expected result \(result) got \(String(describing: resultReceived))", file: file, line: line)
         }
+    }
+    
+    private func makeSUT(
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> (RemoteLoginLoader, HTTPClientSpy) {
+        let httpClient = HTTPClientSpy()
+        let sut = RemoteLoginLoader(httpClient: httpClient)
+        
+        trackForMemoryLeaks(sut, file: file, line: line)
+        trackForMemoryLeaks(httpClient, file: file, line: line)
+        
+        return (sut, httpClient)
+    }
+    
+    private func anyURL() -> URL {
+        URL(string: "https://a-url")!
     }
 }
